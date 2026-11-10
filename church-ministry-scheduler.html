@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Church Ministry Scheduler</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pri:#243B53;--onp:#fff;--sec:#DCE6F1;--bg:#F8FAFC;--card:#fff;--tx:#334155;--ok:#DCFCE7;--warn:#FEF3C7;--red:#DC2626;--rbg:#FEE2E2;--bd:#E2E8F0;--mut:#64748B;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--pri:#9FB8D6;--onp:#0F172A;--sec:#243B53;--bg:#0F172A;--card:#1E293B;--tx:#E2E8F0;--ok:#14532D;--warn:#713F12;--red:#F87171;--rbg:#450A0A;--bd:#334155;--mut:#94A3B8;color-scheme:dark}}
+*{box-sizing:border-box}html,body{height:auto}body{margin:0;background:var(--bg);color:var(--tx);font:14px Inter,system-ui,sans-serif}
+h1,h2,h3{font-family:'Plus Jakarta Sans',Inter,sans-serif;color:var(--pri);margin:0}h2{font-size:17px;margin:22px 0 10px}h3{font-size:13px;letter-spacing:.08em;margin-bottom:8px}
+header{background:var(--card);border-bottom:1px solid var(--bd);padding:12px 16px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+nav{display:flex;gap:4px;overflow-x:auto;flex:1}nav button{background:none;border:0;padding:8px 12px;border-radius:8px;color:var(--tx);font:500 14px Inter;cursor:pointer;white-space:nowrap}nav button.on,nav button:hover{background:var(--sec);color:var(--pri)}
+main{max-width:1280px;margin:0 auto;padding:16px}.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;box-shadow:0 1px 3px rgba(15,23,42,.06)}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:14px}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.stat b{display:block;font:700 26px 'Plus Jakarta Sans';color:var(--pri)}.stat span{color:var(--mut);font-size:12px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%}th,td{padding:7px 8px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap}th{font-size:12px;color:var(--mut);font-weight:600}
+.st td:first-child{font-weight:500;position:sticky;left:0;background:var(--card)}
+select,input{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:6px 8px;min-width:0}select{width:128px}
+.btn{background:var(--pri);color:var(--onp);border:0;border-radius:8px;padding:8px 13px;font:500 13px Inter;cursor:pointer}.btn.o{background:none;color:var(--pri);border:1px solid var(--bd)}.btn:hover{opacity:.88}.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.cl{display:flex;align-items:center;gap:4px}.ic{font-size:14px;cursor:help}
+td.vc{background:var(--rbg)}td.vc select,td.vr select{color:var(--red);font-weight:600;border-color:var(--red)}td.vc .ic,td.vr .ic{color:var(--red)}td.vr select{text-decoration:underline dotted}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:500;background:var(--sec)}.p-Light{background:var(--ok)}.p-High{background:var(--warn)}.p-Overloaded{background:var(--rbg);color:var(--red);font-weight:600}
+.pb{height:7px;background:var(--sec);border-radius:9px;min-width:90px}.pb i{display:block;height:100%;border-radius:9px;background:var(--pri)}.pb.Overloaded i{background:var(--red)}.pb.High i{background:#D97706}.pb.Light i{background:#16A34A}
+.w{color:var(--red);margin:4px 0;font-size:13px}.w.r{color:#B45309}.mut{color:var(--mut)}.fm{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:12px}textarea{width:100%;height:150px;font:12px monospace}
+.sheets{display:none}.sheets.show{display:block}.hid{display:none}
+.sheet{background:#fff;color:#000;padding:18px;margin:0 auto 24px;max-width:1000px;font-family:Calibri,Carlito,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet .tb{border:1px solid #000;text-align:center;padding:14px 8px;margin-bottom:34px}.sheet .tb b{display:block;font:700 30px Arial,sans-serif}.sheet .tb span{display:block;font:700 21px Arial,sans-serif;margin-top:8px}.sheet .tb i{display:block;font:600 12px Arial;letter-spacing:.2em;margin-top:4px}
+.sheet table{width:100%;table-layout:fixed;border:1px solid #8EAADB}.sheet th{background:#4472C4;color:#fff;font:700 24px Arial;text-align:center;padding:14px 6px;border:1px solid #8EAADB;white-space:normal}.sheet th:first-child{width:22%;font-size:20px}.sheet td{text-align:center;font:12px Arial;padding:8px 6px;border:1px solid #8EAADB;white-space:normal;color:#000;background:#fff}.sheet tr:nth-child(odd) td{background:#D9E2F3}.sheet td:first-child{font-weight:700;text-transform:uppercase;font-size:11px}
+@page{size:landscape;margin:10mm}
+@media print{header,.bar,.noprint,.edit{display:none!important}body{background:#fff}main{padding:0;max-width:none}.sheets{display:block!important}.sheet{margin:0;max-width:none;padding:0;break-after:page}.sheet:last-child{break-after:auto}}
+</style></head><body>
+<header><h1 style="font-size:17px">⛪ Ministry Scheduler</h1><nav id="nav"></nav>
+<div class="bar" style="margin:0"><select id="mo" style="width:auto"></select><input id="yr" type="number" min="2000" max="2100" style="width:80px"></div></header>
+<main id="app"></main>
+<script>
+const CH=['Calawis','Tanag'],$=s=>document.querySelector(s);
+const SV=[{id:'sun',name:'Sunday Service',wd:0,ch:CH,roles:['Word/Communion','Song Lead','Back-up Singer','Emcee','Bible Reader','Offertory','Offering Song','Closing Prayer','Ushers','Kids Teacher','Asst. Teacher']},
+{id:'sat',name:'Saturday Service',wd:6,ch:CH,roles:['Song Lead/Opening Prayer','Back Up Singers','Word','Closing Prayer','3PM Devotion Facilitator']},
+{id:'wed',name:'Wednesday Service',wd:3,ch:['Tanag'],roles:['Emcee','Song Lead/Opening Prayer','Word','Closing Prayer']}];
+const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const PG=['Dashboard','Schedule','Ministers','Workload Monitoring','Settings'];
+const now=new Date(),U={p:0,y:now.getFullYear(),m:now.getMonth(),q:'',fc:'',fp:'',wc:'',ed:null,del:null,sug:null,tsv:null};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const lbl=(s,l)=>{const[y,m,d]=s.split('-');return new Date(+y,m-1,+d).toLocaleDateString('en-US',{month:l?'long':'short',day:'numeric'})};
+const dts=(y,m,wd)=>{const a=[],d=new Date(y,m,1);while(d.getMonth()===m){if(d.getDay()===wd)a.push(fmt(d));d.setDate(d.getDate()+1)}return a};
+const slots=(y=U.y,m=U.m)=>{const o=[];SV.forEach(v=>{const ds=dts(y,m,v.wd);v.ch.forEach(c=>ds.forEach((d,i)=>v.roles.forEach(r=>{const k=`${v.id}|${c}|${d}|${r}`;o.push({v:v.id,c,d,i,r,k});if(MULTI.includes(r))o.push({v:v.id,c,d,i,r,k:k+'+',x:1})})))});return o};
+function seed(){const M=(id,name,church,pos)=>({id,name,church,pos,title:pos==='Pastor'?'Ptr.':'Bro.',active:true,notes:''});
+return{m:[M('john','John','Calawis','Minister'),M('david','David','Calawis','Pastor'),M('mark','Mark','Calawis','Minister'),M('luke','Luke','Calawis','Minister'),M('ruth','Ruth','Calawis','Minister'),M('peter','Peter','Tanag','Minister'),M('andrew','Andrew','Tanag','Minister'),M('james','James','Tanag','Minister'),M('esther','Esther','Tanag','Minister'),M('paul','Paul','Tanag','Pastor')],
+th:{l:3,m:5,h:7},a:{'sun|Calawis|2026-11-01|Song Lead':'john','sun|Calawis|2026-11-01|Bible Reader':'john','sun|Calawis|2026-11-01|Closing Prayer':'john','sun|Calawis|2026-11-01|Emcee':'peter','sun|Tanag|2026-11-01|Word/Communion':'david','sun|Calawis|2026-11-08|Word/Communion':'paul'}}}
+let S;try{S=JSON.parse(localStorage.getItem('cms'))}catch(e){}S=S||seed();
+const save=()=>{try{localStorage.setItem('cms',JSON.stringify(S))}catch(e){}};
+const mn=id=>S.m.find(x=>x.id===id);
+const MULTI=['Back-up Singer','Back Up Singers','Offering Song'];
+const SH={sun:['SUNDAY WORSHIP SERVICE MINISTERS','Sunday | 2:00PM'],sat:['SATURDAY PRAYER AND WORSHIP MINISTERS','Saturday | 5:00PM'],wed:['MID-WEEK PRAYER AND DEVOTION MINISTERS','Wednesday | 7:30PM']};
+const dn=m=>m?((m.title??(m.pos==='Pastor'?'Ptr.':''))+' '+m.name).trim():'';
+function sheets(){let h=`<div class="sheets${U.pv?' show':''}">`;SV.forEach(v=>{const ds=dts(U.y,U.m,v.wd);v.ch.forEach(c=>{
+h+=`<div class="sheet"><div class="tb"><b>${SH[v.id][0]}</b><span>${SH[v.id][1]}</span><i>${c.toUpperCase()}</i></div><table><thead><tr><th>${MN[U.m].toUpperCase()}</th>${ds.map(d=>`<th>${d.slice(8)}</th>`).join('')}</tr></thead><tbody>${v.roles.map(r=>`<tr><td>${r}</td>${ds.map(d=>{const a=[S.a[`${v.id}|${c}|${d}|${r}`]];if(MULTI.includes(r))a.push(S.a[`${v.id}|${c}|${d}|${r}+`]);const n=a.map(x=>mn(x)).filter(Boolean).map(dn);return`<td>${n.length?n.map(esc).join(' &amp;<br>'):'-'}</td>`}).join('')}</tr>`).join('')}</tbody></table></div>`})});return h+'</div>'}
+function an(y=U.y,m=U.m){const sl=slots(y,m),cnt={},pd={},fl={};
+sl.forEach(s=>{const id=S.a[s.k];if(!id||!mn(id))return;cnt[id]=(cnt[id]||0)+1;pd[s.d]=pd[s.d]||{};pd[s.d][id]=(pd[s.d][id]||0)+1});
+sl.forEach(s=>{const id=S.a[s.k],p=id&&mn(id);if(!p)return;const f={};
+if(s.c==='Calawis'&&p.church==='Tanag'&&p.pos!=='Pastor')f.ch='Church Assignment Violation: This minister belongs to Tanag.';
+const n=pd[s.d][id];if(n>1)f.rep=`Repeated Assignment: ${p.name} has been assigned to ${n} responsibilities on ${lbl(s.d,1)}.`;
+if(f.ch||f.rep)fl[s.k]=f});return{sl,cnt,pd,fl}}
+const stat=n=>n<=0?'None':n<=S.th.l?'Light':n<=S.th.m?'Moderate':n<=S.th.h?'High':'Overloaded';
+const pill=n=>`<span class="pill p-${stat(n)}">${stat(n)}</span>`;
+const bar=n=>`<div class="pb ${stat(n)}"><i style="width:${Math.min(100,n/(S.th.h+1)*100)}%"></i></div>`;
+function cell(k,A){const id=S.a[k],f=A.fl[k]||{},cls=f.ch?'vc':f.rep?'vr':'',tip=[f.ch,f.rep].filter(Boolean).join(' '),ic=f.ch?'⚠':f.rep?'⟳':'';
+return`<td class="${cls}"${tip?` title="${esc(tip)}"`:''}><div class="cl"><select data-k="${esc(k)}"><option value="">—</option>${S.m.filter(x=>x.active||x.id===id).map(x=>`<option value="${x.id}"${x.id===id?' selected':''}>${esc(dn(x))}</option>`).join('')}</select>${ic?`<span class="ic" title="${esc(tip)}">${ic}</span>`:''}</div></td>`}
+function dash(A){const act=S.m.filter(x=>x.active),tot=Object.values(A.cnt).reduce((a,b)=>a+b,0),cf=new Set(Object.keys(A.fl).map(k=>S.a[k])),hi=S.m.filter(x=>(A.cnt[x.id]||0)>S.th.m);
+const st=[['Total ministers',act.length],['Calawis',act.filter(x=>x.church==='Calawis').length],['Tanag',act.filter(x=>x.church==='Tanag').length],['Assignments this month',tot],['With conflicts',cf.size],['High workload',hi.length]];
+const ov=SV.map(v=>{const n=A.sl.filter(s=>s.v===v.id&&S.a[s.k]).length,t=A.sl.filter(s=>s.v===v.id).length;return`<tr><td>${v.name}</td><td>${n} / ${t}</td><td><div class="pb"><i style="width:${t?n/t*100:0}%"></i></div></td></tr>`}).join('');
+return`<div class="stats">${st.map(s=>`<div class="card stat"><b>${s[1]}</b><span>${s[0]}</span></div>`).join('')}</div>
+<div class="g" style="margin-top:14px"><div class="card"><h3>MONTHLY OVERVIEW — ${MN[U.m].toUpperCase()} ${U.y}</h3><table>${ov}</table></div>
+<div class="card"><h3>NEEDS ATTENTION</h3>${warns(A)||'<span class="mut">No conflicts this month.</span>'}${hi.map(x=>`<div class="w r">${esc(x.name)}: ${A.cnt[x.id]} assignments (${stat(A.cnt[x.id])})</div>`).join('')}</div></div>`}
+function warns(A){return Object.entries(A.fl).map(([k,f])=>{const[v,c,d,r]=k.split('|');return[f.ch,f.rep].filter(Boolean).map(t=>`<div class="w">⚠ ${c} · ${lbl(d)} · ${esc(r.replace('+',' (2nd)'))} — ${esc(t)}</div>`).join('')}).join('')}
+function sched(A){let h=`<div class="bar"><button class="btn" data-a="sug">Suggest Balanced Assignments</button><button class="btn o" data-a="dup">Duplicate previous month</button><button class="btn o" data-a="clr">${U.cc?'Confirm clear?':'Clear assignments'}</button><button class="btn o" data-a="pv">${U.pv?'Edit view':'Print preview'}</button><button class="btn o" data-a="prn">Print / PDF</button><button class="btn o" data-a="xls">Excel (copy)</button><span class="mut">Changes save automatically</span></div>`;
+if(U.tsv)h+=`<div class="card noprint" style="margin-bottom:12px"><b>Paste into Excel</b> <button class="btn o" data-a="cl2">Close</button><textarea readonly onfocus="this.select()">${esc(U.tsv)}</textarea></div>`;
+if(U.sug)h+=`<div class="card noprint" style="margin-bottom:12px"><h3>SUGGESTIONS (not applied until you approve)</h3>${U.sug.length?`<div class="tw" style="max-height:220px;overflow:auto">${U.sug.map(s=>`<div>${s.c} · ${lbl(s.d)} · ${esc(s.r)} → <b>${esc(mn(s.id).name)}</b></div>`).join('')}</div><div class="bar" style="margin-top:10px"><button class="btn" data-a="apy">Approve &amp; apply all</button><button class="btn o" data-a="no">Dismiss</button></div>`:'<span class="mut">No empty slots with eligible ministers.</span> <button class="btn o" data-a="no">Dismiss</button>'}</div>`;
+h+=`<div class="edit${U.pv?' hid':''}">`;SV.forEach(v=>{const ds=dts(U.y,U.m,v.wd);h+=`<h2>${v.name}${v.ch.length<2?' — Tanag only':''}</h2><div class="g">`;
+v.ch.forEach(c=>{h+=`<section class="card"><h3>${c.toUpperCase()}</h3><div class="tw"><table class="st"><thead><tr><th>Responsibility</th>${ds.map(d=>`<th>${lbl(d)}</th>`).join('')}</tr></thead><tbody>${v.roles.flatMap(r=>MULTI.includes(r)?[r,r+'+']:[r]).map(r=>`<tr><td>${r.endsWith('+')?'↳ 2nd':r}</td>${ds.map(d=>cell(`${v.id}|${c}|${d}|${r}`,A)).join('')}</tr>`).join('')}</tbody></table></div></section>`});h+='</div>'});
+const w=warns(A);return h+`<h2>Warnings</h2><div class="card">${w||'<span class="mut">No conflicts detected.</span>'}</div></div>`+sheets()}
+function mins(){const f=document.getElementById('mf'),e=U.ed&&mn(U.ed)||{};
+return`<div class="card" style="margin-bottom:14px"><h3>${e.id?'EDIT MINISTER':'ADD MINISTER'}</h3><div class="fm"><input id="f-n" placeholder="Full name" value="${esc(e.name)}"><select id="f-c" style="width:auto">${CH.map(c=>`<option${e.church===c?' selected':''}>${c}</option>`).join('')}</select><select id="f-p" style="width:auto">${['Minister','Pastor'].map(c=>`<option${e.pos===c?' selected':''}>${c}</option>`).join('')}</select><select id="f-t" style="width:auto">${['Bro.','Sis.','Ptr.'].map(c=>`<option${(e.title??(e.pos==='Pastor'?'Ptr.':'Bro.'))===c?' selected':''}>${c}</option>`).join('')}</select><select id="f-a" style="width:auto"><option value="1">Active</option><option value="0"${e.active===false?' selected':''}>Inactive</option></select><input id="f-o" placeholder="Notes (optional)" value="${esc(e.notes)}"></div><div id="err" class="w"></div><button class="btn" data-a="sv">${e.id?'Save changes':'Add minister'}</button> ${e.id?'<button class="btn o" data-a="cx">Cancel</button>':''}</div>
+<div class="bar"><input id="q" placeholder="Search ministers" value="${esc(U.q)}"><select id="fc" style="width:auto"><option value="">All churches</option>${CH.map(c=>`<option${U.fc===c?' selected':''}>${c}</option>`).join('')}</select><select id="fp" style="width:auto"><option value="">All positions</option><option${U.fp==='Minister'?' selected':''}>Minister</option><option${U.fp==='Pastor'?' selected':''}>Pastor</option></select></div><div class="card tw" id="mt">${mtab()}</div>`}
+function mtab(){const q=U.q.toLowerCase(),l=S.m.filter(x=>x.name.toLowerCase().includes(q)&&(!U.fc||x.church===U.fc)&&(!U.fp||x.pos===U.fp));
+return`<table><tr><th>Name</th><th>Church</th><th>Position</th><th>Status</th><th>Notes</th><th></th></tr>${l.map(x=>`<tr><td>${esc(dn(x))}</td><td>${x.church}</td><td>${x.pos}</td><td><span class="pill ${x.active?'p-Light':''}">${x.active?'Active':'Inactive'}</span></td><td class="mut">${esc(x.notes)}</td><td><button class="btn o" data-a="ed" data-i="${x.id}">Edit</button> <button class="btn o" data-a="tg" data-i="${x.id}">${x.active?'Deactivate':'Activate'}</button> <button class="btn o" data-a="del" data-i="${x.id}">${U.del===x.id?'Confirm delete?':'Delete'}</button></td></tr>`).join('')||'<tr><td class="mut">No ministers found.</td></tr>'}</table>`}
+function work(A){const pm=new Date(U.y,U.m-1,1),P=an(pm.getFullYear(),pm.getMonth()),det={};
+A.sl.forEach(s=>{const id=S.a[s.k];if(!id)return;const d=det[id]=det[id]||{Calawis:0,Tanag:0,sun:0,sat:0,wed:0};d[s.c]++;d[s.v]++});
+const l=S.m.filter(x=>!U.wc||x.church===U.wc).sort((a,b)=>(A.cnt[b.id]||0)-(A.cnt[a.id]||0));
+return`<div class="bar"><select id="wc" style="width:auto"><option value="">All churches</option>${CH.map(c=>`<option${U.wc===c?' selected':''}>${c}</option>`).join('')}</select><span class="mut">Month: ${MN[U.m]} ${U.y} (change at top). “Church” filters by home church.</span></div>
+<div class="card tw"><table><tr><th>Minister</th><th>Home Church</th><th>Position</th><th>Total</th><th>Calawis</th><th>Tanag</th><th>Sun</th><th>Sat</th><th>Wed</th><th>vs ${MN[pm.getMonth()].slice(0,3)}</th><th>Status</th><th>Load</th></tr>${l.map(x=>{const n=A.cnt[x.id]||0,d=det[x.id]||{Calawis:0,Tanag:0,sun:0,sat:0,wed:0},df=n-(P.cnt[x.id]||0),o=stat(n)==='Overloaded';
+return`<tr style="${o?'color:var(--red);font-weight:600':''}"><td>${esc(x.name)}${x.active?'':' <span class="mut">(inactive)</span>'}</td><td>${x.church}</td><td>${x.pos}</td><td>${n}</td><td>${d.Calawis}</td><td>${d.Tanag}</td><td>${d.sun}</td><td>${d.sat}</td><td>${d.wed}</td><td>${df>0?'+':''}${df}</td><td>${pill(n)}</td><td>${bar(n)}</td></tr>`}).join('')}</table></div>`}
+function sett(){return`<div class="card" style="max-width:520px"><h3>WORKLOAD THRESHOLDS (max assignments per level)</h3><div class="fm">${[['l','Light up to'],['m','Moderate up to'],['h','High up to']].map(([k,t])=>`<label>${t}<br><input type="number" min="0" data-th="${k}" value="${S.th[k]}"></label>`).join('')}</div><p class="mut">Anything above “High” is Overloaded (red).</p>
+<button class="btn o" data-a="rst">${U.rs?'Confirm reset sample data?':'Reset all data to sample'}</button>
+<p class="mut" style="margin-top:16px">Data is stored in this browser only. Supabase database and login need a backend and can’t be connected from a hosted page here.</p></div>`}
+function render(){const sc=[...document.querySelectorAll('.tw')].map(e=>e.scrollLeft),A=an();
+$('#nav').innerHTML=PG.map((p,i)=>`<button class="${U.p===i?'on':''}" data-p="${i}">${p}</button>`).join('');
+$('#mo').innerHTML=MN.map((n,i)=>`<option value="${i}"${i===U.m?' selected':''}>${n}</option>`).join('');$('#yr').value=U.y;
+$('#app').innerHTML=[dash,sched,mins,work,sett][U.p](A);document.querySelectorAll('.tw').forEach((e,i)=>e.scrollLeft=sc[i]||0)}
+function suggest(){const A=an(),cnt={...A.cnt},pd=JSON.parse(JSON.stringify(A.pd)),out=[];
+A.sl.forEach(s=>{if(S.a[s.k]||s.x)return;const c=S.m.filter(x=>x.active&&!(s.c==='Calawis'&&x.church==='Tanag'&&x.pos!=='Pastor')&&!((pd[s.d]||{})[x.id]))
+.sort((a,b)=>(cnt[a.id]||0)-(cnt[b.id]||0)||(b.church===s.c)-(a.church===s.c)||a.name.localeCompare(b.name))[0];
+if(c){out.push({...s,id:c.id});cnt[c.id]=(cnt[c.id]||0)+1;pd[s.d]=pd[s.d]||{};pd[s.d][c.id]=1}});return out}
+document.addEventListener('change',e=>{const t=e.target;
+if(t.dataset.k){if(t.value)S.a[t.dataset.k]=t.value;else delete S.a[t.dataset.k];save();render()}
+else if(t.id==='mo'){U.m=+t.value;U.sug=null;render()}
+else if(t.id==='yr'){const y=+t.value;if(y>1999&&y<2101){U.y=y;U.sug=null;render()}}
+else if(t.id==='fc'||t.id==='fp'){U[t.id]=t.value;$('#mt').innerHTML=mtab()}
+else if(t.id==='wc'){U.wc=t.value;render()}
+else if(t.dataset.th){S.th[t.dataset.th]=Math.max(0,+t.value||0);save();render()}});
+document.addEventListener('input',e=>{if(e.target.id==='q'){U.q=e.target.value;$('#mt').innerHTML=mtab()}});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+if(b.dataset.p!==undefined){U.p=+b.dataset.p;U.tsv=U.sug=null;render();return}
+const a=b.dataset.a,i=b.dataset.i;if(!a)return;
+if(a!=='clr')U.cc=0;if(a!=='del')U.del=null;if(a!=='rst')U.rs=0;
+if(a==='sug'){U.sug=suggest()}
+else if(a==='apy'){U.sug.forEach(s=>S.a[s.k]=s.id);U.sug=null;save()}
+else if(a==='no'){U.sug=null}
+else if(a==='prn'){window.print();return}
+else if(a==='cl2'){U.tsv=null}else if(a==='pv'){U.pv=!U.pv}
+else if(a==='dup'){const pm=new Date(U.y,U.m-1,1),ps=slots(pm.getFullYear(),pm.getMonth());
+slots().forEach(s=>{const o=ps.find(p=>p.v===s.v&&p.c===s.c&&p.i===s.i&&p.r===s.r&&p.x===s.x);if(o&&S.a[o.k])S.a[s.k]=S.a[o.k];else delete S.a[s.k]});save()}
+else if(a==='clr'){if(!U.cc){U.cc=1}else{slots().forEach(s=>delete S.a[s.k]);U.cc=0;save()}}
+else if(a==='xls'){const A=an();U.tsv=['Service\tChurch\tDate\tResponsibility\tMinister\tFlag',...A.sl.map(s=>{const m=mn(S.a[s.k]),f=A.fl[s.k]||{};return[SV.find(v=>v.id===s.v).name,s.c,s.d,s.r,m?m.name:'',[f.ch,f.rep].filter(Boolean).join(' ')].join('\t')})].join('\n');try{navigator.clipboard.writeText(U.tsv)}catch(x){}}
+else if(a==='ed'){U.ed=i}else if(a==='cx'){U.ed=null}
+else if(a==='tg'){const m=mn(i);m.active=!m.active;save()}
+else if(a==='del'){if(U.del===i){S.m=S.m.filter(x=>x.id!==i);Object.keys(S.a).forEach(k=>{if(S.a[k]===i)delete S.a[k]});U.del=null;save()}else U.del=i}
+else if(a==='sv'){const n=$('#f-n').value.trim();if(n.length<2){$('#err').textContent='Please enter the minister’s full name.';return}
+if(S.m.some(x=>x.name.toLowerCase()===n.toLowerCase()&&x.id!==U.ed)){$('#err').textContent='A minister with this name already exists.';return}
+const d={title:$('#f-t').value,name:n,church:$('#f-c').value,pos:$('#f-p').value,active:$('#f-a').value==='1',notes:$('#f-o').value.trim()};
+if(U.ed)Object.assign(mn(U.ed),d);else S.m.push({id:'m'+Date.now().toString(36),...d});U.ed=null;save()}
+else if(a==='rst'){if(!U.rs){U.rs=1}else{S=seed();U.rs=0;save()}}
+render()});
+render();
+</script></body></html>
