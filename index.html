@@ -48,6 +48,10 @@ let S;try{S=JSON.parse(localStorage.getItem('cms'))}catch(e){}S=S||seed();
 const save=()=>{try{localStorage.setItem('cms',JSON.stringify(S))}catch(e){}};
 const mn=id=>S.m.find(x=>x.id===id);
 const MULTI=['Back-up Singer','Back Up Singers','Offering Song'];
+const MINS=['Word/Communion','Word','Song Lead','Opening Prayer','Back-up Singer','Emcee','Bible Reader','Offertory','Offering Song','Closing Prayer','Ushers','Kids Teacher','Asst. Teacher','3PM Devotion Facilitator'];
+const RM=r=>{r=r.replace('+','');return r==='Back Up Singers'?['Back-up Singer']:r==='Song Lead/Opening Prayer'?['Song Lead','Opening Prayer']:r==='Word/Communion'?['Word/Communion','Word']:[r]};
+const ok=(m,r)=>!!(m.mins&&RM(r).some(t=>m.mins.includes(t)));
+const chips=()=>(U.fm||[]).map(t=>`<span class="pill" style="margin-left:6px">${t} <button data-a="rmi" data-i="${t}" style="border:0;background:none;cursor:pointer;color:inherit">✕</button></span>`).join('');
 const SH={sun:['SUNDAY WORSHIP SERVICE MINISTERS','Sunday | 2:00PM'],sat:['SATURDAY PRAYER AND WORSHIP MINISTERS','Saturday | 5:00PM'],wed:['MID-WEEK PRAYER AND DEVOTION MINISTERS','Wednesday | 7:30PM']};
 const dn=m=>m?((m.title??(m.pos==='Pastor'?'Ptr.':''))+' '+m.name).trim():'';
 function sheets(){let h=`<div class="sheets${U.pv?' show':''}">`;SV.forEach(v=>{const ds=dts(U.y,U.m,v.wd);v.ch.forEach(c=>{
@@ -62,7 +66,7 @@ const stat=n=>n<=0?'None':n<=S.th.l?'Light':n<=S.th.m?'Moderate':n<=S.th.h?'High
 const pill=n=>`<span class="pill p-${stat(n)}">${stat(n)}</span>`;
 const bar=n=>`<div class="pb ${stat(n)}"><i style="width:${Math.min(100,n/(S.th.h+1)*100)}%"></i></div>`;
 function cell(k,A){const id=S.a[k],f=A.fl[k]||{},cls=f.ch?'vc':f.rep?'vr':'',tip=[f.ch,f.rep].filter(Boolean).join(' '),ic=f.ch?'⚠':f.rep?'⟳':'';
-return`<td class="${cls}"${tip?` title="${esc(tip)}"`:''}><div class="cl"><select data-k="${esc(k)}"><option value="">—</option>${S.m.filter(x=>x.active||x.id===id).map(x=>`<option value="${x.id}"${x.id===id?' selected':''}>${esc(dn(x))}</option>`).join('')}</select>${ic?`<span class="ic" title="${esc(tip)}">${ic}</span>`:''}</div></td>`}
+return`<td class="${cls}"${tip?` title="${esc(tip)}"`:''}><div class="cl"><select data-k="${esc(k)}"><option value="">—</option>${S.m.filter(x=>(x.active&&ok(x,k.split('|')[3]))||x.id===id).map(x=>`<option value="${x.id}"${x.id===id?' selected':''}>${esc(dn(x))}</option>`).join('')}</select>${ic?`<span class="ic" title="${esc(tip)}">${ic}</span>`:''}</div></td>`}
 function dash(A){const act=S.m.filter(x=>x.active),tot=Object.values(A.cnt).reduce((a,b)=>a+b,0),cf=new Set(Object.keys(A.fl).map(k=>S.a[k])),hi=S.m.filter(x=>(A.cnt[x.id]||0)>S.th.m);
 const st=[['Total ministers',act.length],['Calawis',act.filter(x=>x.church==='Calawis').length],['Tanag',act.filter(x=>x.church==='Tanag').length],['Assignments this month',tot],['With conflicts',cf.size],['High workload',hi.length]];
 const ov=SV.map(v=>{const n=A.sl.filter(s=>s.v===v.id&&S.a[s.k]).length,t=A.sl.filter(s=>s.v===v.id).length;return`<tr><td>${v.name}</td><td>${n} / ${t}</td><td><div class="pb"><i style="width:${t?n/t*100:0}%"></i></div></td></tr>`}).join('');
@@ -77,10 +81,10 @@ h+=`<div class="edit${U.pv?' hid':''}">`;SV.forEach(v=>{const ds=dts(U.y,U.m,v.w
 v.ch.forEach(c=>{h+=`<section class="card"><h3>${c.toUpperCase()}</h3><div class="tw"><table class="st"><thead><tr><th>Responsibility</th>${ds.map(d=>`<th>${lbl(d)}</th>`).join('')}</tr></thead><tbody>${v.roles.flatMap(r=>MULTI.includes(r)?[r,r+'+']:[r]).map(r=>`<tr><td>${r.endsWith('+')?'↳ 2nd':r}</td>${ds.map(d=>cell(`${v.id}|${c}|${d}|${r}`,A)).join('')}</tr>`).join('')}</tbody></table></div></section>`});h+='</div>'});
 const w=warns(A);return h+`<h2>Warnings</h2><div class="card">${w||'<span class="mut">No conflicts detected.</span>'}</div></div>`+sheets()}
 function mins(){const f=document.getElementById('mf'),e=U.ed&&mn(U.ed)||{};
-return`<div class="card" style="margin-bottom:14px"><h3>${e.id?'EDIT MINISTER':'ADD MINISTER'}</h3><div class="fm"><input id="f-n" placeholder="Full name" value="${esc(e.name)}"><select id="f-c" style="width:auto">${CH.map(c=>`<option${e.church===c?' selected':''}>${c}</option>`).join('')}</select><select id="f-p" style="width:auto">${['Minister','Pastor'].map(c=>`<option${e.pos===c?' selected':''}>${c}</option>`).join('')}</select><select id="f-t" style="width:auto">${['Bro.','Sis.','Ptr.'].map(c=>`<option${(e.title??(e.pos==='Pastor'?'Ptr.':'Bro.'))===c?' selected':''}>${c}</option>`).join('')}</select><select id="f-a" style="width:auto"><option value="1">Active</option><option value="0"${e.active===false?' selected':''}>Inactive</option></select><input id="f-o" placeholder="Notes (optional)" value="${esc(e.notes)}"></div><div id="err" class="w"></div><button class="btn" data-a="sv">${e.id?'Save changes':'Add minister'}</button> ${e.id?'<button class="btn o" data-a="cx">Cancel</button>':''}</div>
+return`<div class="card" style="margin-bottom:14px"><h3>${e.id?'EDIT MINISTER':'ADD MINISTER'}</h3><div class="fm"><input id="f-n" placeholder="Full name" value="${esc(e.name)}"><select id="f-c" style="width:auto">${CH.map(c=>`<option${e.church===c?' selected':''}>${c}</option>`).join('')}</select><select id="f-p" style="width:auto">${['Minister','Pastor'].map(c=>`<option${e.pos===c?' selected':''}>${c}</option>`).join('')}</select><select id="f-t" style="width:auto">${['Bro.','Sis.','Ptr.'].map(c=>`<option${(e.title??(e.pos==='Pastor'?'Ptr.':'Bro.'))===c?' selected':''}>${c}</option>`).join('')}</select><select id="f-a" style="width:auto"><option value="1">Active</option><option value="0"${e.active===false?' selected':''}>Inactive</option></select><input id="f-o" placeholder="Notes (optional)" value="${esc(e.notes)}"></div><div style="margin-bottom:10px"><div class="mut" style="margin-bottom:4px">Ministry (pick from the list; add as many as needed)</div><select id="f-mi" style="width:auto;max-width:100%"><option value="">+ Add a ministry…</option>${MINS.map(t=>`<option>${t}</option>`).join('')}</select><span id="chips">${chips()}</span></div><div id="err" class="w"></div><button class="btn" data-a="sv">${e.id?'Save changes':'Add minister'}</button> ${e.id?'<button class="btn o" data-a="cx">Cancel</button>':''}</div>
 <div class="bar"><input id="q" placeholder="Search ministers" value="${esc(U.q)}"><select id="fc" style="width:auto"><option value="">All churches</option>${CH.map(c=>`<option${U.fc===c?' selected':''}>${c}</option>`).join('')}</select><select id="fp" style="width:auto"><option value="">All positions</option><option${U.fp==='Minister'?' selected':''}>Minister</option><option${U.fp==='Pastor'?' selected':''}>Pastor</option></select></div><div class="card tw" id="mt">${mtab()}</div>`}
 function mtab(){const q=U.q.toLowerCase(),l=S.m.filter(x=>x.name.toLowerCase().includes(q)&&(!U.fc||x.church===U.fc)&&(!U.fp||x.pos===U.fp));
-return`<table><tr><th>Name</th><th>Church</th><th>Position</th><th>Status</th><th>Notes</th><th></th></tr>${l.map(x=>`<tr><td>${esc(dn(x))}</td><td>${x.church}</td><td>${x.pos}</td><td><span class="pill ${x.active?'p-Light':''}">${x.active?'Active':'Inactive'}</span></td><td class="mut">${esc(x.notes)}</td><td><button class="btn o" data-a="ed" data-i="${x.id}">Edit</button> <button class="btn o" data-a="tg" data-i="${x.id}">${x.active?'Deactivate':'Activate'}</button> <button class="btn o" data-a="del" data-i="${x.id}">${U.del===x.id?'Confirm delete?':'Delete'}</button></td></tr>`).join('')||'<tr><td class="mut">No ministers found.</td></tr>'}</table>`}
+return`<table><tr><th>Name</th><th>Church</th><th>Position</th><th>Status</th><th>Ministries</th><th>Notes</th><th></th></tr>${l.map(x=>`<tr><td>${esc(dn(x))}</td><td>${x.church}</td><td>${x.pos}</td><td><span class="pill ${x.active?'p-Light':''}">${x.active?'Active':'Inactive'}</span></td><td style="white-space:normal;min-width:180px">${esc((x.mins||[]).join(', ')||'Any')}</td><td class="mut">${esc(x.notes)}</td><td><button class="btn o" data-a="ed" data-i="${x.id}">Edit</button> <button class="btn o" data-a="tg" data-i="${x.id}">${x.active?'Deactivate':'Activate'}</button> <button class="btn o" data-a="del" data-i="${x.id}">${U.del===x.id?'Confirm delete?':'Delete'}</button></td></tr>`).join('')||'<tr><td class="mut">No ministers found.</td></tr>'}</table>`}
 function work(A){const pm=new Date(U.y,U.m-1,1),P=an(pm.getFullYear(),pm.getMonth()),det={};
 A.sl.forEach(s=>{const id=S.a[s.k];if(!id)return;const d=det[id]=det[id]||{Calawis:0,Tanag:0,sun:0,sat:0,wed:0};d[s.c]++;d[s.v]++});
 const l=S.m.filter(x=>!U.wc||x.church===U.wc).sort((a,b)=>(A.cnt[b.id]||0)-(A.cnt[a.id]||0));
@@ -95,7 +99,7 @@ $('#nav').innerHTML=PG.map((p,i)=>`<button class="${U.p===i?'on':''}" data-p="${
 $('#mo').innerHTML=MN.map((n,i)=>`<option value="${i}"${i===U.m?' selected':''}>${n}</option>`).join('');$('#yr').value=U.y;
 $('#app').innerHTML=[dash,sched,mins,work,sett][U.p](A);document.querySelectorAll('.tw').forEach((e,i)=>e.scrollLeft=sc[i]||0)}
 function suggest(){const A=an(),cnt={...A.cnt},pd=JSON.parse(JSON.stringify(A.pd)),out=[];
-A.sl.forEach(s=>{if(S.a[s.k]||s.x)return;const c=S.m.filter(x=>x.active&&!(s.c==='Calawis'&&x.church==='Tanag'&&x.pos!=='Pastor')&&!((pd[s.d]||{})[x.id]))
+A.sl.forEach(s=>{if(S.a[s.k]||s.x)return;const c=S.m.filter(x=>x.active&&ok(x,s.r)&&!(s.c==='Calawis'&&x.church==='Tanag'&&x.pos!=='Pastor')&&!((pd[s.d]||{})[x.id]))
 .sort((a,b)=>(cnt[a.id]||0)-(cnt[b.id]||0)||(b.church===s.c)-(a.church===s.c)||a.name.localeCompare(b.name))[0];
 if(c){out.push({...s,id:c.id});cnt[c.id]=(cnt[c.id]||0)+1;pd[s.d]=pd[s.d]||{};pd[s.d][c.id]=1}});return out}
 document.addEventListener('change',e=>{const t=e.target;
@@ -103,6 +107,7 @@ if(t.dataset.k){if(t.value)S.a[t.dataset.k]=t.value;else delete S.a[t.dataset.k]
 else if(t.id==='mo'){U.m=+t.value;U.sug=null;render()}
 else if(t.id==='yr'){const y=+t.value;if(y>1999&&y<2101){U.y=y;U.sug=null;render()}}
 else if(t.id==='fc'||t.id==='fp'){U[t.id]=t.value;$('#mt').innerHTML=mtab()}
+else if(t.id==='f-mi'){if(t.value){U.fm=U.fm||[];if(!U.fm.includes(t.value))U.fm.push(t.value);$('#chips').innerHTML=chips();t.value=''}}
 else if(t.id==='wc'){U.wc=t.value;render()}
 else if(t.dataset.th){S.th[t.dataset.th]=Math.max(0,+t.value||0);save();render()}});
 document.addEventListener('input',e=>{if(e.target.id==='q'){U.q=e.target.value;$('#mt').innerHTML=mtab()}});
@@ -110,7 +115,8 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
 if(b.dataset.p!==undefined){U.p=+b.dataset.p;U.tsv=U.sug=null;render();return}
 const a=b.dataset.a,i=b.dataset.i;if(!a)return;
 if(a!=='clr')U.cc=0;if(a!=='del')U.del=null;if(a!=='rst')U.rs=0;
-if(a==='sug'){U.sug=suggest()}
+if(a==='rmi'){U.fm=(U.fm||[]).filter(t=>t!==i);$('#chips').innerHTML=chips();return}
+else if(a==='sug'){U.sug=suggest()}
 else if(a==='apy'){U.sug.forEach(s=>S.a[s.k]=s.id);U.sug=null;save()}
 else if(a==='no'){U.sug=null}
 else if(a==='prn'){window.print();return}
@@ -119,13 +125,13 @@ else if(a==='dup'){const pm=new Date(U.y,U.m-1,1),ps=slots(pm.getFullYear(),pm.g
 slots().forEach(s=>{const o=ps.find(p=>p.v===s.v&&p.c===s.c&&p.i===s.i&&p.r===s.r&&p.x===s.x);if(o&&S.a[o.k])S.a[s.k]=S.a[o.k];else delete S.a[s.k]});save()}
 else if(a==='clr'){if(!U.cc){U.cc=1}else{slots().forEach(s=>delete S.a[s.k]);U.cc=0;save()}}
 else if(a==='xls'){const A=an();U.tsv=['Service\tChurch\tDate\tResponsibility\tMinister\tFlag',...A.sl.map(s=>{const m=mn(S.a[s.k]),f=A.fl[s.k]||{};return[SV.find(v=>v.id===s.v).name,s.c,s.d,s.r,m?m.name:'',[f.ch,f.rep].filter(Boolean).join(' ')].join('\t')})].join('\n');try{navigator.clipboard.writeText(U.tsv)}catch(x){}}
-else if(a==='ed'){U.ed=i}else if(a==='cx'){U.ed=null}
+else if(a==='ed'){U.ed=i;U.fm=[...(mn(i).mins||[])]}else if(a==='cx'){U.ed=null;U.fm=[]}
 else if(a==='tg'){const m=mn(i);m.active=!m.active;save()}
 else if(a==='del'){if(U.del===i){S.m=S.m.filter(x=>x.id!==i);Object.keys(S.a).forEach(k=>{if(S.a[k]===i)delete S.a[k]});U.del=null;save()}else U.del=i}
 else if(a==='sv'){const n=$('#f-n').value.trim();if(n.length<2){$('#err').textContent='Please enter the minister’s full name.';return}
 if(S.m.some(x=>x.name.toLowerCase()===n.toLowerCase()&&x.id!==U.ed)){$('#err').textContent='A minister with this name already exists.';return}
-const d={title:$('#f-t').value,name:n,church:$('#f-c').value,pos:$('#f-p').value,active:$('#f-a').value==='1',notes:$('#f-o').value.trim()};
-if(U.ed)Object.assign(mn(U.ed),d);else S.m.push({id:'m'+Date.now().toString(36),...d});U.ed=null;save()}
+const d={mins:[...(U.fm||[])],title:$('#f-t').value,name:n,church:$('#f-c').value,pos:$('#f-p').value,active:$('#f-a').value==='1',notes:$('#f-o').value.trim()};
+if(U.ed)Object.assign(mn(U.ed),d);else S.m.push({id:'m'+Date.now().toString(36),...d});U.ed=null;U.fm=[];save()}
 else if(a==='rst'){if(!U.rs){U.rs=1}else{S=seed();U.rs=0;save()}}
 render()});
 render();
