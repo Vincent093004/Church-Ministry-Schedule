@@ -55,7 +55,7 @@ const ok=(m,r,v,c)=>!!(m.box&&m.box.includes(`${v}|${c}|${r.replace(/\++$/,'')}`
 const tl=t=>{const[v,c,r]=t.split('|');return`${{sun:'Sunday',sat:'Saturday',wed:'Wednesday'}[v]}${v==='wed'?'':' · '+(c==='Both'?'Both churches':c)} · ${r}`};
 const BX=[{v:'sun',c:'Tanag',t:'Sunday · Tanag'},{v:'sun',c:'Calawis',t:'Sunday · Calawis'},{v:'sat',c:'Tanag',t:'Saturday · Tanag'},{v:'sat',c:'Calawis',t:'Saturday · Calawis'},{v:'wed',c:'Tanag',t:'Wednesday (general)'},{v:'sun',c:'Both',t:'Sunday · Both churches'},{v:'sat',c:'Both',t:'Saturday · Both churches'}];
 const mopts=b=>'<option value="">+ Add ministry…</option>'+SV.find(v=>v.id===b.v).roles.map(r=>`<option>${r}</option>`).join('');
-const bxopts=church=>BX.filter(b=>church==='Both'||b.c===church).map(b=>{const label=church==='Both'||b.c==='Both'?b.t:b.v==='wed'?'Wednesday':b.v==='sun'?'Sunday':'Saturday';return`<option value="${b.v}|${b.c}">${label}</option>`}).join('');
+const bxopts=church=>BX.filter(b=>church==='Both'?b.c==='Both'||b.v==='wed'&&b.c==='Tanag':b.c===church).map(b=>{const label=church==='Both'||b.c==='Both'?b.t:b.v==='wed'?'Wednesday':b.v==='sun'?'Sunday':'Saturday';return`<option value="${b.v}|${b.c}">${label}</option>`}).join('');
 const chips=()=>(U.fm||[]).map(t=>`<span class="pill" style="margin-left:6px">${tl(t)} <button data-a="rmi" data-i="${t}" style="border:0;background:none;cursor:pointer;color:inherit">✕</button></span>`).join('');
 const SH={sun:['SUNDAY WORSHIP SERVICE MINISTERS','Sunday | 2:00PM'],sat:['SATURDAY PRAYER AND WORSHIP MINISTERS','Saturday | 5:00PM'],wed:['MID-WEEK PRAYER AND DEVOTION MINISTERS','Wednesday | 7:30PM']};
 const dn=m=>m?((m.title??(m.pos==='Pastor'?'Ptr.':''))+' '+m.name).trim():'';
