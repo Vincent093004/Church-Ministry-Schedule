@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Church Ministry Scheduler</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Church Ministry Scheduler</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root{--pri:#243B53;--onp:#fff;--sec:#DCE6F1;--bg:#F8FAFC;--card:#fff;--tx:#334155;--ok:#DCFCE7;--warn:#FEF3C7;--red:#DC2626;--rbg:#FEE2E2;--bd:#E2E8F0;--mut:#64748B;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -30,21 +25,15 @@ select,input{font:inherit;color:var(--tx);background:var(--card);border:1px soli
 .sheet .tb{padding:8px;margin-bottom:10px}.sheet .tb b{font-size:19px}.sheet .tb span{font-size:14px;margin-top:3px}.sheet th{font-size:15px;padding:6px 4px}.sheet th:first-child{font-size:13px}.sheet td{font-size:10.5px;padding:4px 5px}.sheet td:first-child{font-size:9.5px}.blk{margin-bottom:14px;break-inside:avoid}
 @page{size:portrait;margin:8mm}
 @media print{header,.bar,.noprint,.edit{display:none!important}body{background:#fff}main{padding:0;max-width:none}.sheets{display:block!important}.sheet{margin:0;max-width:none;padding:0;break-after:page}.sheet:last-child{break-after:auto}}
-</style>
-</head>
-<body>
-<header>
-<h1 style="font-size:17px">⛪ Ministry Scheduler</h1><nav id="nav"></nav>
-<div class="bar" style="margin:0"><select id="mo" style="width:auto"></select><input id="yr" type="number" min="2000" max="2100" style="width:80px"></div>
-</header>
+</style></head><body>
+<header><h1 style="font-size:17px">⛪ Ministry Scheduler</h1><nav id="nav"></nav>
+<div class="bar" style="margin:0"><select id="mo" style="width:auto"></select><input id="yr" type="number" min="2000" max="2100" style="width:80px"></div></header>
 <main id="app"></main>
 <script>
 const CH=['Calawis','Tanag'],$=s=>document.querySelector(s);
-const SV=[
-{id:'sun',name:'Sunday Service',wd:0,ch:CH,roles:['Word/Communion','Song Lead','Back-up Singer','Emcee','Bible Reader','Offertory','Offering Song','Closing Prayer','Ushers','Kids Teacher','Asst. Teacher']},
+const SV=[{id:'sun',name:'Sunday Service',wd:0,ch:CH,roles:['Word/Communion','Song Lead','Back-up Singer','Emcee','Bible Reader','Offertory','Offering Song','Closing Prayer','Ushers','Kids Teacher','Asst. Teacher']},
 {id:'sat',name:'Saturday Service',wd:6,ch:CH,roles:['Song Lead/Opening Prayer','Back Up Singers','Word','Closing Prayer','3PM Devotion Facilitator']},
-{id:'wed',name:'Wednesday Service',wd:3,ch:['Tanag'],roles:['Emcee','Song Lead/Opening Prayer','Word','Closing Prayer']}
-];
+{id:'wed',name:'Wednesday Service',wd:3,ch:['Tanag'],roles:['Emcee','Song Lead/Opening Prayer','Word','Closing Prayer']}];
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const PG=['Schedule','Dashboard','Ministers','Workload Monitoring','Settings'];
 const now=new Date(),U={sc:'Tanag',ms:'Tanag',p:0,y:now.getFullYear(),m:now.getMonth(),q:'',fc:'',fp:'',wc:'',ed:null,del:null,sug:null,tsv:null};
@@ -54,7 +43,8 @@ const lbl=(s,l)=>{const[y,m,d]=s.split('-');return new Date(+y,m-1,+d).toLocaleD
 const dts=(y,m,wd)=>{const a=[],d=new Date(y,m,1);while(d.getMonth()===m){if(d.getDay()===wd)a.push(fmt(d));d.setDate(d.getDate()+1)}return a};
 const slots=(y=U.y,m=U.m)=>{const o=[];SV.forEach(v=>{const ds=dts(y,m,v.wd);v.ch.forEach(c=>ds.forEach((d,i)=>v.roles.forEach(r=>{const k=`${v.id}|${c}|${d}|${r}`;o.push({v:v.id,c,d,i,r,k});if(MULTI.includes(r))['+','++','+++'].forEach(x=>o.push({v:v.id,c,d,i,r,k:k+x,x}))})))});return o};
 function seed(){const M=(id,name,church,pos)=>({id,name,church,pos,title:pos==='Pastor'?'Ptr.':'Bro.',active:true,notes:'',box:SV.flatMap(v=>v.ch.filter(c=>church==='Both'||church===c).flatMap(c=>v.roles.map(r=>`${v.id}|${c}|${r}`)))});
-return{m:[M('john','John','Calawis','Minister'),M('david','David','Calawis','Pastor'),M('mark','Mark','Calawis','Minister'),M('luke','Luke','Calawis','Minister'),M('ruth','Ruth','Calawis','Minister'),M('peter','Peter','Tanag','Minister'),M('andrew','Andrew','Tanag','Minister'),M('james','James','Tanag','Minister'),M('esther','Esther','Tanag','Minister'),M('paul','Paul','Tanag','Pastor')],th:{l:3,m:5,h:7},a:{'sun|Calawis|2026-11-01|Song Lead':'john','sun|Calawis|2026-11-01|Bible Reader':'john','sun|Calawis|2026-11-01|Closing Prayer':'john','sun|Calawis|2026-11-01|Emcee':'peter','sun|Tanag|2026-11-01|Word/Communion':'david','sun|Calawis|2026-11-08|Word/Communion':'paul'}}}
+return{m:[M('john','John','Calawis','Minister'),M('david','David','Calawis','Pastor'),M('mark','Mark','Calawis','Minister'),M('luke','Luke','Calawis','Minister'),M('ruth','Ruth','Calawis','Minister'),M('peter','Peter','Tanag','Minister'),M('andrew','Andrew','Tanag','Minister'),M('james','James','Tanag','Minister'),M('esther','Esther','Tanag','Minister'),M('paul','Paul','Tanag','Pastor')],
+th:{l:3,m:5,h:7},a:{'sun|Calawis|2026-11-01|Song Lead':'john','sun|Calawis|2026-11-01|Bible Reader':'john','sun|Calawis|2026-11-01|Closing Prayer':'john','sun|Calawis|2026-11-01|Emcee':'peter','sun|Tanag|2026-11-01|Word/Communion':'david','sun|Calawis|2026-11-08|Word/Communion':'paul'}}}
 let S;try{S=JSON.parse(localStorage.getItem('cms'))}catch(e){}S=S||seed();
 const save=()=>{try{localStorage.setItem('cms',JSON.stringify(S))}catch(e){}};
 const mn=id=>S.m.find(x=>x.id===id);
@@ -62,9 +52,10 @@ const MULTI=['Back-up Singer','Back Up Singers','Offering Song'];
 const MINS=['Word/Communion','Word','Song Lead','Opening Prayer','Back-up Singer','Emcee','Bible Reader','Offertory','Offering Song','Closing Prayer','Ushers','Kids Teacher','Asst. Teacher','3PM Devotion Facilitator'];
 const RM=r=>{r=r.replace(/\++$/,'');return r==='Back Up Singers'?['Back-up Singer']:r==='Song Lead/Opening Prayer'?['Song Lead','Opening Prayer']:[r]};
 const ok=(m,r,v,c)=>!!(m.box&&m.box.includes(`${v}|${c}|${r.replace(/\++$/,'')}`));
-const tl=t=>{const[v,c,r]=t.split('|');return`${{sun:'Sunday',sat:'Saturday',wed:'Wednesday'}[v]}${v==='wed'?'':' · '+c} · ${r}`};
-const BX=[{v:'sun',c:'Tanag',t:'Sunday · Tanag'},{v:'sun',c:'Calawis',t:'Sunday · Calawis'},{v:'sat',c:'Tanag',t:'Saturday · Tanag'},{v:'sat',c:'Calawis',t:'Saturday · Calawis'},{v:'wed',c:'Tanag',t:'Wednesday (general)'}];
+const tl=t=>{const[v,c,r]=t.split('|');return`${{sun:'Sunday',sat:'Saturday',wed:'Wednesday'}[v]}${v==='wed'?'':' · '+(c==='Both'?'Both churches':c)} · ${r}`};
+const BX=[{v:'sun',c:'Tanag',t:'Sunday · Tanag'},{v:'sun',c:'Calawis',t:'Sunday · Calawis'},{v:'sat',c:'Tanag',t:'Saturday · Tanag'},{v:'sat',c:'Calawis',t:'Saturday · Calawis'},{v:'wed',c:'Tanag',t:'Wednesday (general)'},{v:'sun',c:'Both',t:'Sunday · Both churches'},{v:'sat',c:'Both',t:'Saturday · Both churches'}];
 const mopts=b=>'<option value="">+ Add ministry…</option>'+SV.find(v=>v.id===b.v).roles.map(r=>`<option>${r}</option>`).join('');
+const bxopts=church=>BX.filter(b=>church==='Both'||b.c===church).map(b=>{const label=church==='Both'||b.c==='Both'?b.t:b.v==='wed'?'Wednesday':b.v==='sun'?'Sunday':'Saturday';return`<option value="${b.v}|${b.c}">${label}</option>`}).join('');
 const chips=()=>(U.fm||[]).map(t=>`<span class="pill" style="margin-left:6px">${tl(t)} <button data-a="rmi" data-i="${t}" style="border:0;background:none;cursor:pointer;color:inherit">✕</button></span>`).join('');
 const SH={sun:['SUNDAY WORSHIP SERVICE MINISTERS','Sunday | 2:00PM'],sat:['SATURDAY PRAYER AND WORSHIP MINISTERS','Saturday | 5:00PM'],wed:['MID-WEEK PRAYER AND DEVOTION MINISTERS','Wednesday | 7:30PM']};
 const dn=m=>m?((m.title??(m.pos==='Pastor'?'Ptr.':''))+' '+m.name).trim():'';
@@ -86,9 +77,11 @@ return`<td class="${cls}"${tip?` title="${esc(tip)}"`:''}><div class="cl"><selec
 function dash(A){const act=S.m,tot=Object.values(A.cnt).reduce((a,b)=>a+b,0),cf=new Set(Object.keys(A.fl).map(k=>S.a[k])),hi=S.m.filter(x=>(A.cnt[x.id]||0)>S.th.m);
 const st=[['Total ministers',act.length],['Calawis + Both',act.filter(x=>x.church!=='Tanag').length],['Tanag + Both',act.filter(x=>x.church!=='Calawis').length],['Assignments this month',tot],['With conflicts',cf.size],['High workload',hi.length]];
 const ov=SV.map(v=>{const n=A.sl.filter(s=>s.v===v.id&&S.a[s.k]).length,t=A.sl.filter(s=>s.v===v.id).length;return`<tr><td>${v.name}</td><td>${n} / ${t}</td><td><div class="pb"><i style="width:${t?n/t*100:0}%"></i></div></td></tr>`}).join('');
-return`<div class="stats">${st.map(s=>`<div class="card stat"><b>${s[1]}</b><span>${s[0]}</span></div>`).join('')}</div><div class="g" style="margin-top:14px"><div class="card"><h3>MONTHLY OVERVIEW — ${MN[U.m].toUpperCase()} ${U.y}</h3><table>${ov}</table></div><div class="card"><h3>NEEDS ATTENTION</h3>${warns(A)||'<span class="mut">No conflicts this month.</span>'}${hi.map(x=>`<div class="w r">${esc(x.name)}: ${A.cnt[x.id]} assignments (${stat(A.cnt[x.id])})</div>`).join('')}</div></div>`}
+return`<div class="stats">${st.map(s=>`<div class="card stat"><b>${s[1]}</b><span>${s[0]}</span></div>`).join('')}</div>
+<div class="g" style="margin-top:14px"><div class="card"><h3>MONTHLY OVERVIEW — ${MN[U.m].toUpperCase()} ${U.y}</h3><table>${ov}</table></div>
+<div class="card"><h3>NEEDS ATTENTION</h3>${warns(A)||'<span class="mut">No conflicts this month.</span>'}${hi.map(x=>`<div class="w r">${esc(x.name)}: ${A.cnt[x.id]} assignments (${stat(A.cnt[x.id])})</div>`).join('')}</div></div>`}
 function warns(A){return Object.entries(A.fl).map(([k,f])=>{const[v,c,d,r]=k.split('|');return[f.ch,f.rep].filter(Boolean).map(t=>`<div class="w">⚠ ${c} · ${lbl(d)} · ${esc(r.replace(/\++$/,''))} — ${esc(t)}</div>`).join('')}).join('')}
-function sched(A){let h=`<div class="bar"><button class="btn${U.sc==='Tanag'?'':' o'}" data-a="sc" data-i="Tanag">Tanag — Sunday, Saturday &amp; Wednesday</button><button class="btn${U.sc==='Calawis'?'':' o'}" data-a="sc" data-i="Calawis">Calawis — Sunday &amp; Saturday</button><button class="btn" data-a="sug">Suggest Balanced Assignments</button><button class="btn o" data-a="dup">Duplicate previous month</button><button class="btn o" data-a="clr">${U.cc?'Confirm clear?':'Clear assignments'}</button><button class="btn o" data-a="pv">${U.pv?'Edit view':'Print preview'}</button><button class="btn o" data-a="prn">Print / PDF</button><button class="btn o" data-a="xls">Excel (copy)</button><span class="mut">Changes save automatically</span></div>`;
+function sched(A){let h=`<div class="bar"><button class="btn${U.sc==='Tanag'?'':' o'}" data-a="sc" data-i="Tanag">Tanag — Sunday, Saturday &amp; Wednesday</button><button class="btn${U.sc==='Calawis'?'':' o'}" data-a="sc" data-i="Calawis">Calawis — Sunday &amp; Saturday</button><span style="width:10px"></span><button class="btn" data-a="sug">Suggest Balanced Assignments</button><button class="btn o" data-a="dup">Duplicate previous month</button><button class="btn o" data-a="clr">${U.cc?'Confirm clear?':'Clear assignments'}</button><button class="btn o" data-a="pv">${U.pv?'Edit view':'Print preview'}</button><button class="btn o" data-a="prn">Print / PDF</button><button class="btn o" data-a="xls">Excel (copy)</button><span class="mut">Changes save automatically</span></div>`;
 if(U.tsv)h+=`<div class="card noprint" style="margin-bottom:12px"><b>Paste into Excel</b> <button class="btn o" data-a="cl2">Close</button><textarea readonly onfocus="this.select()">${esc(U.tsv)}</textarea></div>`;
 if(U.sug)h+=`<div class="card noprint" style="margin-bottom:12px"><h3>SUGGESTIONS (not applied until you approve)</h3>${U.sug.length?`<div class="tw" style="max-height:220px;overflow:auto">${U.sug.map(s=>`<div>${s.c} · ${lbl(s.d)} · ${esc(s.r)} → <b>${esc(mn(s.id).name)}</b></div>`).join('')}</div><div class="bar" style="margin-top:10px"><button class="btn" data-a="apy">Approve &amp; apply all</button><button class="btn o" data-a="no">Dismiss</button></div>`:'<span class="mut">No empty slots with eligible ministers.</span> <button class="btn o" data-a="no">Dismiss</button>'}</div>`;
 h+=`<div class="edit${U.pv?' hid':''}">`;SV.forEach(v=>{if(!v.ch.includes(U.sc))return;const ds=dts(U.y,U.m,v.wd);h+=`<h2>${v.name}${v.ch.length<2?' — Tanag only':''}</h2><div class="g">`;
@@ -96,17 +89,19 @@ v.ch.filter(c=>c===U.sc).forEach(c=>{h+=`<section class="card"><h3>${c.toUpperCa
 const w=warns(A);return h+`<h2>Warnings</h2><div class="card">${w||'<span class="mut">No conflicts detected.</span>'}</div></div>`+sheets()}
 function mins(){const e=U.ed&&mn(U.ed)||{};
 return`<div class="card" style="margin-bottom:14px"><h3>${e.id?'EDIT MINISTER':'ADD MINISTER'}</h3><div class="fm"><input id="f-n" placeholder="Full name" value="${esc(e.name)}"><select id="f-t" style="width:auto">${['Bro.','Sis.','Ptr.'].map(c=>`<option${(e.title??'Bro.')===c?' selected':''}>${c}</option>`).join('')}</select><select id="f-c" style="width:auto">${[...CH,'Both'].map(c=>`<option${e.church===c?' selected':''}>${c}</option>`).join('')}</select><input id="f-o" placeholder="Notes (optional)" value="${esc(e.notes)}"></div>
-<div style="margin-bottom:10px"><div class="mut" style="margin-bottom:4px">Put this minister in a schedule box: choose the service, then the ministry</div><select id="f-sc" style="width:auto">${BX.map(b=>`<option value="${b.v}|${b.c}">${b.t}</option>`).join('')}</select> <select id="f-mi" style="width:auto;max-width:100%">${mopts(BX[0])}</select><span id="chips">${chips()}</span></div><div id="err" class="w"></div><button class="btn" data-a="sv">${e.id?'Save changes':'Add minister'}</button> ${e.id?'<button class="btn o" data-a="cx">Cancel</button>':''}</div>
+<div style="margin-bottom:10px"><div class="mut" style="margin-bottom:4px">Put this minister in a schedule box: choose the service, then the ministry</div><select id="f-sc" style="width:auto">${bxopts(e.church||'Tanag')}</select> <select id="f-mi" style="width:auto;max-width:100%">${mopts(BX.find(b=>b.v+'|'+b.c===document.querySelector('#f-sc')?.value)||BX[0])}</select><span id="chips">${chips()}</span></div><div id="err" class="w"></div><button class="btn" data-a="sv">${e.id?'Save changes':'Add minister'}</button> ${e.id?'<button class="btn o" data-a="cx">Cancel</button>':''}</div>
 <h2>Ministers by service</h2><div class="bar"><button class="btn${U.ms==='Tanag'?'':' o'}" data-a="ms" data-i="Tanag">Tanag</button><button class="btn${U.ms==='Calawis'?'':' o'}" data-a="ms" data-i="Calawis">Calawis</button><button class="btn${U.ms==='Both'?'' :' o'}" data-a="ms" data-i="Both">Both</button></div><div class="g">${BX.filter(b=>U.ms==='Both'||(U.ms==='Tanag'?b.c==='Tanag':b.c==='Calawis')).map(b=>`<section class="card"><h3>${b.t.toUpperCase()}</h3><table>${SV.find(v=>v.id===b.v).roles.map(r=>{const l=S.m.filter(x=>(x.box||[]).includes(`${b.v}|${b.c}|${r}`));return`<tr><td style="font-weight:500;vertical-align:top;white-space:normal">${r}</td><td style="white-space:normal">${l.map(x=>`<div>${esc(x.name)}</div>`).join('')||'<span class="mut">—</span>'}</td></tr>`}).join('')}</table></section>`).join('')}</div>
 <h2>All ministers</h2><div class="bar"><input id="q" placeholder="Search ministers" value="${esc(U.q)}"></div><div class="card tw" id="mt">${mtab()}</div>`}
 function mtab(){const q=U.q.toLowerCase(),l=S.m.filter(x=>x.name.toLowerCase().includes(q));return`<table><tr><th>Name</th><th>Home church</th><th>Notes</th><th></th></tr>${l.map(x=>`<tr><td>${esc(dn(x))}</td><td>${x.church}</td><td class="mut">${esc(x.notes)}</td><td><button class="btn o" data-a="ed" data-i="${x.id}">Edit</button> <button class="btn o" data-a="del" data-i="${x.id}">${U.del===x.id?'Confirm delete?':'Delete'}</button></td></tr>`).join('')||'<tr><td class="mut">No ministers found.</td></tr>'}</table>`}
 function work(A){const pm=new Date(U.y,U.m-1,1),P=an(pm.getFullYear(),pm.getMonth()),det={};
 A.sl.forEach(s=>{const id=S.a[s.k];if(!id)return;const d=det[id]=det[id]||{Calawis:0,Tanag:0,sun:0,sat:0,wed:0};d[s.c]++;d[s.v]++});
 const l=S.m.filter(x=>!U.wc||x.church===U.wc||x.church==='Both').sort((a,b)=>(A.cnt[b.id]||0)-(A.cnt[a.id]||0));
-return`<div class="bar"><select id="wc" style="width:auto"><option value="">All churches</option>${CH.map(c=>`<option${U.wc===c?' selected':''}>${c}</option>`).join('')}<option>Both</option></select><span class="mut">Month: ${MN[U.m]} ${U.y} (change at top). “Church” filters by home church.</span></div>
+return`<div class="bar"><select id="wc" style="width:auto"><option value="">All churches</option>${CH.map(c=>`<option${U.wc===c?' selected':''}>${c}</option>`).join('')}</select><span class="mut">Month: ${MN[U.m]} ${U.y} (change at top). “Church” filters by home church.</span></div>
 <div class="card tw"><table><tr><th>Minister</th><th>Home Church</th><th>Position</th><th>Total</th><th>Calawis</th><th>Tanag</th><th>Sun</th><th>Sat</th><th>Wed</th><th>vs ${MN[pm.getMonth()].slice(0,3)}</th><th>Status</th><th>Load</th></tr>${l.map(x=>{const n=A.cnt[x.id]||0,d=det[x.id]||{Calawis:0,Tanag:0,sun:0,sat:0,wed:0},df=n-(P.cnt[x.id]||0),o=stat(n)==='Overloaded';
 return`<tr style="${o?'color:var(--red);font-weight:600':''}"><td>${esc(x.name)}${x.active?'':' <span class="mut">(inactive)</span>'}</td><td>${x.church}</td><td>${x.pos}</td><td>${n}</td><td>${d.Calawis}</td><td>${d.Tanag}</td><td>${d.sun}</td><td>${d.sat}</td><td>${d.wed}</td><td>${df>0?'+':''}${df}</td><td>${pill(n)}</td><td>${bar(n)}</td></tr>`}).join('')}</table></div>`}
-function sett(){return`<div class="card" style="max-width:520px"><h3>WORKLOAD THRESHOLDS (max assignments per level)</h3><div class="fm">${[['l','Light up to'],['m','Moderate up to'],['h','High up to']].map(([k,t])=>`<label>${t}<br><input type="number" min="0" data-th="${k}" value="${S.th[k]}"></label>`).join('')}</div><p class="mut">Anything above “High” is Overloaded (red).</p><button class="btn o" data-a="rst">${U.rs?'Confirm reset sample data?':'Reset all data to sample'}</button><p class="mut" style="margin-top:16px">Data is stored in this browser only. Supabase database and login need a backend and can’t be connected from a hosted page here.</p></div>`}
+function sett(){return`<div class="card" style="max-width:520px"><h3>WORKLOAD THRESHOLDS (max assignments per level)</h3><div class="fm">${[['l','Light up to'],['m','Moderate up to'],['h','High up to']].map(([k,t])=>`<label>${t}<br><input type="number" min="0" data-th="${k}" value="${S.th[k]}"></label>`).join('')}</div><p class="mut">Anything above “High” is Overloaded (red).</p>
+<button class="btn o" data-a="rst">${U.rs?'Confirm reset sample data?':'Reset all data to sample'}</button>
+<p class="mut" style="margin-top:16px">Data is stored in this browser only. Supabase database and login need a backend and can’t be connected from a hosted page here.</p></div>`}
 function render(){const sc=[...document.querySelectorAll('.tw')].map(e=>e.scrollLeft),A=an();
 $('#nav').innerHTML=PG.map((p,i)=>`<button class="${U.p===i?'on':''}" data-p="${i}">${p}</button>`).join('');
 $('#mo').innerHTML=MN.map((n,i)=>`<option value="${i}"${i===U.m?' selected':''}>${n}</option>`).join('');$('#yr').value=U.y;
@@ -119,8 +114,9 @@ if(t.dataset.k){if(t.value)S.a[t.dataset.k]=t.value;else delete S.a[t.dataset.k]
 else if(t.id==='mo'){U.m=+t.value;U.sug=null;render()}
 else if(t.id==='yr'){const y=+t.value;if(y>1999&&y<2101){U.y=y;U.sug=null;render()}}
 else if(t.id==='fc'||t.id==='fp'){U[t.id]=t.value;$('#mt').innerHTML=mtab()}
+else if(t.id==='f-c'){const old=$('#f-sc').value;$('#f-sc').innerHTML=bxopts(t.value);if([...$('#f-sc').options].some(o=>o.value===old))$('#f-sc').value=old;$('#f-mi').innerHTML=mopts(BX.find(b=>b.v+'|'+b.c===$('#f-sc').value)||BX[0])}
 else if(t.id==='f-sc'){$('#f-mi').innerHTML=mopts(BX.find(b=>b.v+'|'+b.c===t.value))}
-else if(t.id==='f-mi'){if(t.value){U.fm=U.fm||[];const v=$('#f-sc').value+'|'+t.value;if(!U.fm.includes(v))U.fm.push(v);$('#chips').innerHTML=chips();t.value=''}}
+else if(t.id==='f-mi'){if(t.value){U.fm=U.fm||[];const[sv,ch]=$('#f-sc').value.split('|'),churches=ch==='Both'?CH:[ch];churches.forEach(c=>{const v=`${sv}|${c}|${t.value}`;if(!U.fm.includes(v))U.fm.push(v)});$('#chips').innerHTML=chips();t.value=''}}
 else if(t.id==='wc'){U.wc=t.value;render()}
 else if(t.dataset.th){S.th[t.dataset.th]=Math.max(0,+t.value||0);save();render()}});
 document.addEventListener('input',e=>{if(e.target.id==='q'){U.q=e.target.value;$('#mt').innerHTML=mtab()}});
@@ -148,6 +144,4 @@ if(U.ed)Object.assign(mn(U.ed),d);else S.m.push({id:'m'+Date.now().toString(36),
 else if(a==='rst'){if(!U.rs){U.rs=1}else{S=seed();U.rs=0;save()}}
 render()});
 render();
-</script>
-</body>
-</html>
+</script></body></html>
